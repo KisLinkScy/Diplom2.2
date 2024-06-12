@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Регистрация{% endblock title %}
+    
+
+{% block content %} 
+        <div class="regestration">
+            <div class="form">
+                <form action="{% url 'registr' %}" method="post">
+                    {% csrf_token %}
+                        {{form.as_p}}
+                    <div class='btns-reg'>
+                        <button type="submit" class="btn-reg">Регистрация</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+{% endblock  %}
+<! -- 
+    <div class="form-item">
+        <input type="text" class="form-control" name="username" placeholder="Имя пользователя..." required>
+    </div>
+
+    <div class="form-item">
+        <input type="text" class="form-control" name="username2" placeholder="Имя пользователя..." required>
+     </div>
+
+    <div class="form-item">
+         <input type="password1" class="form-control" name="password1" placeholder="Пароль..." required>
+    </div>
+
+    <div class="form-item">
+        <input type="password2" class="form-control" name="password2" placeholder="Пароль..." required>
+    </div>
+-->

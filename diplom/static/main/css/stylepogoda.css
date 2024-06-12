@@ -1,0 +1,120 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .container-pogoda {
+    margin: 10px;
+    position: relative;
+    width: 450px;
+    height: 79vh;
+    background-color: #161616a1;
+    padding: 28px 32px;
+    overflow: hidden;
+    border-radius: 18px;
+    font-family: "Lato" sans-serif;
+    transition: 0.6s ease-out;
+    color: #48f105;
+  }
+  .container-pogoda p{
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+  }
+  .search-box {
+    width: 100%;
+    height: min-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .search-box input {
+    color: #48f105;
+    width: 80%;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding-left: 32px;
+    background-color: #16161677; 
+  }
+  
+  .search-box input::placeholder {
+    font-size: 20px;
+    font-weight: 500;
+    color: #48f105;
+    text-transform: capitalize;
+  }
+  .search-box button {
+    width: 50px;
+    height: 50px;
+    color: #06283d;
+    background-color: #16161688;
+    border-radius: 50%;
+    font-size: 22px;
+    transition: 0.4s ease;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .search-box button:hover {
+    color: #48f105;
+    background-color: #474849;
+  }
+  
+  .fa-location-dot {
+    position: absolute;
+    color: #48f105;
+    font-size: 28px;
+  }
+  
+  .weather {
+    margin-top: 30px;
+    text-align: center;
+    display: none;
+  }
+  
+  .weather h1 {
+    font-size: 60px;
+    font-weight: 700;
+  }
+  
+  .weather h2 {
+    font-size: 35px;
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  
+  .details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 50px 0;
+    padding: 0 20px;
+  }
+  
+  .details i {
+    font-size: 40px;
+  }
+  
+  .details p {
+    font-size: 28px;
+  }
+  
+  .weather-image i {
+    font-size: 90px;
+  }
+  
+  .error {
+    text-align: left;
+    font-size: 30px;
+    margin-top: 20px;
+    color: rgb(255, 255, 255);
+    display: none;
+  }

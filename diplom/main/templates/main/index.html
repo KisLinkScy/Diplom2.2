@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/css/css.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/clock.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/uslugi.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/regestration.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/pay.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://bootstraptema.ru/plugins/2017/thooclock/jquery.thooClock.js"></script>
+    <script src="https://widget.cloudpayments.ru/bundles/cloudpayments"></script>
+ 
+    <title>{% block title %}Главная страница{% endblock %}</title>
+    
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+  <header>
+        <div class="fixed-top">
+            <nav class="navbar-expand-lg navbar-dark mx-background-top-linear">
+              <div class="container">           
+                <div class="navbar-brand">
+                  <div class="clock-bottom">
+                    <div class="clock">
+                      <div id="Date"></div>
+                      <ul>
+                        <li id="hours"></li>
+                        <li id="point">:</li>
+                        <li id="min"></li>
+                        <li id="point">:</li>
+                        <li id="sec"></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>  
+                <div class="navbar-collapse">
+          
+                  <ul class="menu-link" id="menu-link">
+          
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'index' %}">Домашня</a>
+                    </li>
+          
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'about' %}">О доме</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_profile'%}">Профиль</a>
+                      </li>
+                    {% else%}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Профиль</a>
+                      </li>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                      </li>
+                    {% else%}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Войти</a>
+                      </li>
+                    {% endif %}
+
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+  </header>
+     <aside>
+        <ul>
+          {% if user.is_authenticated %}
+            <a href="{% url 'svet' %}"><li>Свет</li></a>
+            <a href="{% url 'gaz' %}"><li>Газ</li></a>
+            <a href="{% url 'voda' %}"><li>Вода</li></a>
+            <a href="{% url 'chat' %}"><li>Чат</li></a>
+          {% else%}
+            <a href="{% url 'login' %}"><li>Свет</li></a>
+            <a href="{% url 'login' %}"><li>Газ</li></a>
+            <a href="{% url 'login' %}"><li>Вода</li></a>
+            <a href="{% url 'login' %}"><li>Чат</li></a>
+          {% endif %}
+        </ul>
+      </aside>
+      <main>
+        {% block content %}
+          <div class="index-item">
+            {% if user.is_authenticated %}
+              <div class="about-zadachi">
+                {% include "main/zadachi.html" %}
+              </div>
+            {% else%}
+              <a href="{% url 'login' %}"></a>
+            {% endif %}
+            <div class="about-pogoda">
+              {% include "main/pogoda.html" %}
+            </div>
+          </div>
+        {% endblock %}
+      </main>    
+
+  <footer class="py-4 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Кислинский Сергей Алексеевич &copy; Дипломная работа 2022-2024</p>
+        </div>
+  </footer>
+  <script src="{% static 'main/js/clock.js' %}"></script>
+  <script src="{% static 'main/js/nav.js' %}"></script>
+  <script src="{% static 'main/js/pay.js' %}"></script>
+</body>
+
+</html>

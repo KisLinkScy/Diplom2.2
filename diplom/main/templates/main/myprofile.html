@@ -1,0 +1,77 @@
+{% extends 'main/index.html' %}
+{% load static %}
+
+{% block title %}Профиль{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="profile">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="image">
+                    {% if form.instance.avatar %}
+                        <img class="profile-image" src="{{ form.instance.avatar.url }}" alt="Аватар"><br>
+                    {% else %}
+                        <img class="profile-image" src="{% static 'main/img/iconUser.png' %}"><br>
+                    {% endif %}
+                    <input class="file" type="file" name="avatar" id="id_avatar">
+                </div>
+
+                <div class="left-item">
+                    <div class="item">
+                        <label for="id_surname">Фамилия:</label>
+                        {{ form.surname }}
+                    </div>
+
+                    <div class="item">
+                        <label for="id_name">Имя:</label>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="item">
+                        <label for="id_patronymic">Отчество:</label>
+                        {{ form.patronymic }}
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="right-item">
+                        <label for="id_email">Email:</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="right-item">
+                        <label for="id_birth_date">Дата рождения:</label>
+                        {{ form.birth_date }}
+                    </div>
+
+                    <div class="right-item">
+                        <label for="id_phone">Телефон:</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <div class="right-item">
+                        <label for="id_city">Город:</label>
+                        {{ form.city }}
+                    </div>
+
+                    <div class="right-item">
+                        <label for="id_street">Улица:</label>
+                        {{ form.street }}
+                    </div>
+
+                    <div class="right-item">
+                        <label for="id_house_number">Номер дома:</label>
+                        {{ form.house_number }}
+                    </div>
+
+                    <div class="right-item">
+                        <label for="id_apartment_number">Номер квартиры:</label>
+                        {{ form.apartment_number }}
+                    </div>
+                </div>
+                <button class="profile-btn" type="submit">Сохранить</button>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

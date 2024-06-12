@@ -1,0 +1,152 @@
+{% extends 'main/index.html' %}
+{% load static %}
+
+{% block title %}Газ{% endblock title %}
+
+{% block content %}
+    <div class="container conteinr">
+        <div class="form-container">
+            <div class="left">
+                <div class="nomer-scheta">
+                    {% comment %} <label for="nomer-input">Номер лицевого счета:</label><br> {% endcomment %}
+                    <input id="nomer-input" type="text"
+                        placeholder="номер лицевого счета...">
+                </div>
+
+                <div class="tarif">
+                    {% comment %} <label for="tarif-input">Текущий тариф:</label><br> {% endcomment %}
+                    <input id="tarif-input" type="text"
+                        placeholder="текущий тариф...">
+                </div>
+
+                <div class="porfzaniya">
+                    {% comment %} <label for="pokazaniya-input">Показания счетчика:</label><br> {% endcomment %}
+                    <input id="pokazaniya-input" type="text"
+                        placeholder="показания счетчика..."
+                        oninput="calculateSum()">
+                </div>
+                <br>
+                <div class="form-group summa-group">
+                    <label for="previous_reading">Предыдущие показания:</label>
+                    <div id="previous_reading" class="previous_reading"
+                        contenteditable="false">{{ last_meter_reading }}</div>
+                    <label class="summa-box-label" for="summa">Сумма к оплате:</label>
+                    <div id="summa" class="summa-box"
+                        contenteditable="false"></div>
+                </div>
+                <div class="form-group">
+                    {% csrf_token %}
+                    <input id="btn" type="submit" value="Сохранить"
+                        onclick="saveAndReload()">
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-data uslugi">
+            
+            <div class="container-pay">
+                <h2>Последние показания газа:</h2>
+                <input class="btn-pay" id="payButton" value="Оплатить" type="button">
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Дата показаний</th>
+                    <th>№ счёта</th>
+                    <th>Показания</th>
+                    <th>Тариф</th>
+                    <th>Сумма к оплате</th>
+                </tr>
+                </thead>
+                <tbody id="table-body">
+                {% for service in last_12_services %}
+                    <tr>
+                        <td>{{ service.date }}</td>
+                        <td>{{ service.account_number }}</td>
+                        <td>{{ service.meter_reading }}</td>
+                        <td>{{ service.tariff }}</td>
+                        <td id="cost">{{ service.total_cost }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function calculateSum() {
+            const tarif = parseFloat(document.getElementById('tarif-input').value);
+            const pokazaniya = parseFloat(document.getElementById('pokazaniya-input').value);
+            const previous_reading = {{ last_meter_reading }}; // Получаем показания прошлого периода           
+            const button = document.getElementById('btn');
+            let summa;
+
+            if (isNaN(tarif) || isNaN(pokazaniya)) {
+                summa = NaN;
+            } else if (previous_reading === 0.0) {
+                summa = tarif * pokazaniya; // Используем другую формулу, если нет предыдущих показаний
+            } else if (pokazaniya > previous_reading) {
+                summa = tarif * (pokazaniya - previous_reading);
+                button.style.display = 'block';
+            } else {
+                document.getElementById('summa').innerText = 'Нужно сверить показания';
+                button.style.display = "none";
+            }
+
+            if (isNaN(summa)) {
+                document.getElementById('summa').style.color = '#54d400';
+                document.getElementById('summa').innerText = 'Нужно сверить показания';
+            } else {
+                button.style.display = 'block';
+                document.getElementById('summa').innerText = summa.toFixed(2);
+            }
+        }
+
+        function getCSRFToken() {
+            return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        }
+
+        function saveData() {
+            const userId = {{ user_id }}; // Получаем user_id из контекста
+
+            const nomerScheta = document.getElementById('nomer-input').value;
+            const tarif = parseFloat(document.getElementById('tarif-input').value);
+            const pokazaniya = parseFloat(document.getElementById('pokazaniya-input').value);
+            const previous_reading = {{ last_meter_reading }}; // Получаем показания прошлого периода
+            const summa = tarif * (pokazaniya - previous_reading);
+            const utility_type = "{{ utility_type|escapejs }}";
+
+            const formData = new FormData();
+            formData.append('account_number', nomerScheta);
+            formData.append('tariff', tarif);
+            formData.append('meter_reading', pokazaniya);
+            formData.append('total_cost', summa);
+            formData.append('utility_type', utility_type);
+            formData.append('user_id', userId); // Используем userId из контекста
+
+            fetch('/save/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCSRFToken() // Добавляем CSRF токен в заголовки запроса
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Данные успешно сохранены в базу данных');
+                    } else {
+                        console.error('Ошибка при сохранении данных в базу данных');
+                    }
+                })
+                .catch(error => {
+                    console.error('Произошла ошибка:', error);
+                });
+        }
+
+        function saveAndReload() {
+            saveData(); // Вызываем функцию сохранения данных
+            location.reload(); // Перезагружаем страницу
+        }
+
+    </script>
+{% endblock %}

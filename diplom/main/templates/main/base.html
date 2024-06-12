@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'main/css/css.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/clock.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/regestration.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://bootstraptema.ru/plugins/2017/thooclock/jquery.thooClock.js"></script>
+  
+    <title>{% block title %}Главная страница{% endblock %}</title>
+    
+    {% block css %}{% endblock %}
+</head>
+<style>
+  .navbar-brand{
+    padding-left: 170px;
+  }
+  
+  main{
+    position: fixed;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    z-index: -1;
+    background-image: url("../img/mainBG.jpg");
+    backdrop-filter: blur(5px);
+  }
+  footer{
+    filter: blur(5px);
+  }
+  
+</style>
+<body>
+  <header>
+        <div class="fixed-top">
+            <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+              <div class="container">           
+                <div class="navbar-brand">
+                  <div class="clock-bottom">
+                    <div class="clock">
+                      <div id="Date"></div>
+                      <ul>
+                        <li id="hours"></li>
+                        <li id="point">:</li>
+                        <li id="min"></li>
+                        <li id="point">:</li>
+                        <li id="sec"></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>  
+              </div>
+            </nav>
+          </div>
+  </header>
+      <main>
+        {% block content %}{% endblock %}
+      </main>    
+        
+        {% block javascript %}{% endblock %}
+  <footer class="py-4 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Кислинский Сергей Алексеевич &copy; Дипломная работа 2022-2024</p>
+        </div>
+  </footer>
+  <script src="{% static 'main/js/clock.js' %}"></script>
+  <script src="{% static 'main/js/nav.js' %}"></script>
+</body>
+
+</html>

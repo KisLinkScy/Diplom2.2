@@ -1,0 +1,37 @@
+python -m venv venv - Устанавливаем виртуальное окружение
+venv\Scripts\activate - Активируем окружение для установки в него django
+pip install django - устанавливаем django (4.2.1)
+python -m pip install -r requirements.txt - Загружаем зависимости если нужно
+pip freeze > requirements.txt - Создаём файл
+
+django-admin startproject имя - Создаём проект
+python manage.py runserver - запуск сервера
+python manage.py startapp имя - создаём подприложение
+pip install channels==4.0.0 - если нужно
+	регстрируем его в файле settings.py во вьюхе нового приложения создаем 
+	контроллеры def index(request):
+			slovar{
+			     'title':'Главнная страница',
+			     'content': 'Тело главной страницы'
+			}
+			return render(request, 'имя/index.html', slovar)
+Данные словаря передаются через плейсхолдер {{ title }}, {{ content }} подствляются
+между соответствующих тегов.
+	Регистрируем маршрут в urls.py главного приложения
+В приложении создаем папку templates, в ней создаем папку с именем приложения 
+и уже в этой папке создаем файлы .hlml 
+Также в приложении создаем папку static в которой будетут папки с картинками, css и тд.
+Для корректного отображения статики в самый верх шаблона .html подгружаем её {% Load static %}
+пути в блолках так же помещаем в конструкцию "{%  static "путь к файлу css или картинки"%}"
+
+python manage.py createsuperuser
+python manage.py migrate 
+python manage.py makemigrations
+python manage.py runserver
+________________________________
+pip install requirements.txt    |
+python manage.py makemigrations |
+python manage.py migrate        |
+python manage.py collectstatic  | 
+daphne diplom.asgi:application  |
+_________________________________
